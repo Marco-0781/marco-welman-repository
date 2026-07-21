@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marco Welman — Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#1B2126;
+    --navy-2:#242C33;
+    --paper:#F4EFE3;
+    --paper-2:#EBE3D0;
+    --brass:#C9A227;
+    --brass-dim:#9c7f21;
+    --green:#4C6B54;
+    --ink:#242C33;
+    --rule:#c9bfa4;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--navy);
+    color:var(--paper);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    margin:0;
+  }
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.04em;
+  }
+  a{color:inherit;}
+
+  /* -------- layout shell: catalog drawer -------- */
+  .shell{
+    display:flex;
+    min-height:100vh;
+  }
+  .tabs{
+    position:sticky;
+    top:0;
+    height:100vh;
+    width:64px;
+    background:var(--navy-2);
+    border-right:1px solid rgba(244,239,227,.12);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:28px 0;
+    gap:8px;
+    z-index:50;
+    flex-shrink:0;
+  }
+  .tabs .drawer-label{
+    writing-mode:vertical-rl;
+    text-orientation:mixed;
+    font-size:11px;
+    color:var(--brass);
+    margin-bottom:24px;
+    text-transform:uppercase;
+  }
+  .tab-btn{
+    writing-mode:vertical-rl;
+    text-orientation:mixed;
+    background:none;
+    border:none;
+    color:rgba(244,239,227,.55);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    padding:14px 10px;
+    cursor:pointer;
+    border-radius:3px;
+    transition:color .2s, background .2s;
+  }
+  .tab-btn:hover, .tab-btn:focus-visible{
+    color:var(--paper);
+    background:rgba(201,162,39,.12);
+    outline:2px solid var(--brass);
+    outline-offset:-2px;
+  }
+  .tab-btn.active{
+    color:var(--brass);
+  }
+
+  main{flex:1; min-width:0;}
+
+  section{
+    padding:110px 8vw 90px;
+    border-bottom:1px solid rgba(244,239,227,.08);
+  }
+
+  /* -------- hero -------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding:0 8vw;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-inner{max-width:760px; position:relative; z-index:2;}
+  .hero .eyebrow{
+    color:var(--brass);
+    font-size:12px;
+    text-transform:uppercase;
+    display:block;
+    margin-bottom:18px;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 6vw, 4.8rem);
+    line-height:1.02;
+    color:var(--paper);
+  }
+  .hero .role{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-weight:400;
+    color:var(--brass);
+    font-size:clamp(1.2rem,2.4vw,1.7rem);
+    margin-top:10px;
+    display:block;
+  }
+  .hero p.lede{
+    margin-top:26px;
+    max-width:52ch;
+    font-size:1.05rem;
+    line-height:1.65;
+    color:rgba(244,239,227,.78);
+  }
+  .hero .cta-row{margin-top:38px; display:flex; gap:16px; flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    padding:13px 22px;
+    border-radius:2px;
+    text-decoration:none;
+    display:inline-block;
+    transition:transform .15s ease, background .2s;
+  }
+  .btn-solid{background:var(--brass); color:var(--navy);}
+  .btn-solid:hover{transform:translateY(-2px); background:#ddb838;}
+  .btn-outline{border:1px solid rgba(244,239,227,.35); color:var(--paper);}
+  .btn-outline:hover{border-color:var(--brass); color:var(--brass);}
+
+  .stamp{
+    position:absolute;
+    right:6vw; top:50%; transform:translateY(-50%) rotate(-8deg);
+    border:2px solid rgba(201,162,39,.35);
+    color:rgba(201,162,39,.5);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    padding:10px 16px;
+    border-radius:4px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    display:none;
+  }
+  @media(min-width:900px){.stamp{display:block;}}
+
+  /* -------- section headers -------- */
+  .sec-head{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:44px;
+  }
+  .sec-num{
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--brass);
+    font-size:13px;
+  }
+  .sec-head h2{
+    font-size:clamp(1.7rem,3vw,2.4rem);
+    color:var(--paper);
+  }
+  .sec-rule{flex:1; height:1px; background:rgba(244,239,227,.15);}
+
+  /* -------- about -------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1.3fr .9fr;
+    gap:64px;
+  }
+  @media(max-width:800px){.about-grid{grid-template-columns:1fr;}}
+  .about-text p{
+    line-height:1.75;
+    color:rgba(244,239,227,.82);
+    margin:0 0 18px;
+  }
+  .field-notes{
+    background:var(--navy-2);
+    border:1px solid rgba(244,239,227,.12);
+    border-radius:4px;
+    padding:26px 28px;
+  }
+  .field-notes .fn-title{
+    font-family:'IBM Plex Mono',monospace;
+    color:var(--brass);
+    font-size:12px;
+    text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .field-notes dl{margin:0;}
+  .field-notes dt{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:rgba(244,239,227,.5);
+    text-transform:uppercase;
+    margin-top:14px;
+  }
+  .field-notes dt:first-child{margin-top:0;}
+  .field-notes dd{margin:4px 0 0; color:var(--paper); font-size:14.5px;}
+
+  /* -------- resume -------- */
+  .timeline{position:relative; padding-left:28px;}
+  .timeline::before{
+    content:"";
+    position:absolute; left:5px; top:6px; bottom:6px;
+    width:1px; background:rgba(244,239,227,.2);
+  }
+  .t-item{position:relative; margin-bottom:42px;}
+  .t-item::before{
+    content:"";
+    position:absolute; left:-28px; top:6px;
+    width:11px; height:11px;
+    background:var(--navy);
+    border:2px solid var(--brass);
+    border-radius:50%;
+  }
+  .t-item .t-date{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--brass);
+    text-transform:uppercase;
+  }
+  .t-item h3{color:var(--paper); font-size:1.25rem; margin-top:6px;}
+  .t-item .t-org{color:rgba(244,239,227,.6); font-size:14px; margin-top:2px;}
+  .t-item p{color:rgba(244,239,227,.75); line-height:1.65; margin-top:10px; max-width:60ch;}
+  .resume-download{margin-top:40px;}
+
+  /* -------- projects: catalog cards -------- */
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+    gap:28px;
+  }
+  .card{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:3px;
+    padding:26px 24px 22px;
+    position:relative;
+    transition:transform .25s ease, box-shadow .25s ease;
+    box-shadow:0 8px 0 -3px rgba(0,0,0,.15), 0 14px 24px rgba(0,0,0,.28);
+  }
+  .card::before{
+    content:"";
+    position:absolute; top:0; left:24px;
+    width:34px; height:10px;
+    background:var(--paper-2);
+    border-radius:0 0 4px 4px;
+  }
+  .card:hover{transform:translateY(-6px) rotate(-.4deg);}
+  .card .c-num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--brass-dim);
+    text-transform:uppercase;
+  }
+  .card h3{font-size:1.2rem; margin-top:10px; color:var(--ink);}
+  .card p{font-size:14px; line-height:1.6; color:#4a453a; margin-top:10px;}
+  .card .tags{margin-top:16px; display:flex; flex-wrap:wrap; gap:8px;}
+  .card .tag{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    text-transform:uppercase;
+    background:rgba(76,107,84,.12);
+    color:var(--green);
+    padding:4px 8px;
+    border-radius:2px;
+  }
+  .card .c-links{margin-top:18px; display:flex; gap:16px;}
+  .card .c-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    text-decoration:none;
+    border-bottom:1px solid var(--brass-dim);
+    color:var(--ink);
+    padding-bottom:1px;
+  }
+
+  /* -------- skills -------- */
+  .skills-wrap{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:36px;}
+  .skill-cat .fn-title{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    color:var(--brass);
+    text-transform:uppercase;
+    margin-bottom:16px;
+  }
+  .skill-cat ul{list-style:none; margin:0; padding:0;}
+  .skill-cat li{
+    padding:9px 0;
+    border-bottom:1px solid rgba(244,239,227,.1);
+    color:rgba(244,239,227,.85);
+    font-size:14.5px;
+    display:flex;
+    justify-content:space-between;
+  }
+  .skill-cat li span.lvl{color:rgba(244,239,227,.4); font-family:'IBM Plex Mono',monospace; font-size:11px;}
+
+  /* -------- contact -------- */
+  .contact-inner{text-align:left; max-width:640px;}
+  .contact-inner h2{font-size:clamp(2rem,4vw,3rem); color:var(--paper); margin-bottom:20px;}
+  .contact-inner p{color:rgba(244,239,227,.75); line-height:1.7; max-width:52ch;}
+  .contact-links{margin-top:34px; display:flex; flex-direction:column; gap:2px;}
+  .contact-links a{
+    display:flex; align-items:baseline; gap:14px;
+    padding:16px 0;
+    border-bottom:1px solid rgba(244,239,227,.12);
+    text-decoration:none;
+    color:var(--paper);
+    font-family:'Fraunces',serif;
+    font-size:1.15rem;
+    transition:color .2s, padding-left .2s;
+  }
+  .contact-links a .mono{color:var(--brass); font-size:12px; width:90px; flex-shrink:0;}
+  .contact-links a:hover{color:var(--brass); padding-left:8px;}
+
+  footer{
+    padding:28px 8vw;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11.5px;
+    color:rgba(244,239,227,.4);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  /* mobile tabs -> top bar */
+  @media(max-width:720px){
+    .shell{flex-direction:column;}
+    .tabs{
+      position:sticky; top:0; height:auto; width:100%;
+      flex-direction:row; padding:12px 14px; overflow-x:auto;
+      border-right:none; border-bottom:1px solid rgba(244,239,227,.12);
+    }
+    .tabs .drawer-label{display:none;}
+    .tab-btn{writing-mode:horizontal-tb; white-space:nowrap;}
+    .stamp{display:none;}
+    section{padding:70px 6vw 60px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <nav class="tabs" aria-label="Section navigation">
+    <span class="drawer-label">Index</span>
+    <button class="tab-btn" data-target="about">About</button>
+    <button class="tab-btn" data-target="resume">Resume</button>
+    <button class="tab-btn" data-target="projects">Projects</button>
+    <button class="tab-btn" data-target="skills">Skills</button>
+    <button class="tab-btn" data-target="contact">Contact</button>
+  </nav>
+
+  <main>
+    <section class="hero" id="top">
+      <div class="hero-inner">
+        <span class="eyebrow mono">Portfolio · Est. 2026</span>
+        <h1>Marco Welman<span class="role">Final-year BSc IT student</span></h1>
+        <p class="lede">I'm finishing my BSc in Information Technology at North-West University, Potchefstroom, with my sights set on an Honours year next. Networks, AI, and decision support systems are where I've enjoyed digging in deepest. This is a running catalog of what I've built, learned, and am chasing next.</p>
+        <div class="cta-row">
+          <a class="btn btn-solid" href="#projects">View projects</a>
+          <a class="btn btn-outline" href="#contact">Get in touch</a>
+        </div>
+      </div>
+      <div class="stamp">Filed under: “IT student”</div>
+    </section>
+
+    <section id="about">
+      <div class="sec-head"><span class="sec-num mono">01</span><h2>About</h2><span class="sec-rule"></span></div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>I grew up in Randfontein, finishing my schooling at Hoërskool Jan Viljoen before moving to Potchefstroom in 2023 to study BSc Information Technology at North-West University. I'm now in my final semester, with graduation this year and an Honours year in IT as the next goal.</p>
+          <p>Across my degree, three modules stood out: Networks, Artificial Intelligence, and Decision Support Systems. AI is the one I keep coming back to — less because of the coursework itself, and more because I use AI tools constantly and find there's real depth once you go past the surface. Decision Support Systems gave me a stumble along the way — I failed it in second semester — but I've gone in better prepared for the retake and I'm confident about passing it this time.</p>
+        </div>
+        <div class="field-notes">
+          <div class="fn-title">Field notes</div>
+          <dl>
+            <dt>Based in</dt><dd>Potchefstroom, South Africa</dd>
+            <dt>Currently</dt><dd>Final-year BSc IT student, NWU</dd>
+            <dt>Focus areas</dt><dd>Networks · AI · Decision Support Systems</dd>
+            <dt>Next goal</dt><dd>Honours in IT</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="resume">
+      <div class="sec-head"><span class="sec-num mono">02</span><h2>Resume</h2><span class="sec-rule"></span></div>
+      <div class="timeline">
+        <div class="t-item">
+          <span class="t-date mono">2023 — Present</span>
+          <h3>BSc Information Technology</h3>
+          <div class="t-org">North-West University, Potchefstroom</div>
+          <p>Final-year student, graduating this year. Strongest and favourite modules: Artificial Intelligence, Networks, and Decision Support Systems. Planning to continue into an Honours year in IT.</p>
+        </div>
+        <div class="t-item">
+          <span class="t-date mono">Matric</span>
+          <h3>National Senior Certificate</h3>
+          <div class="t-org">Hoërskool Jan Viljoen, Randfontein</div>
+          <p>Served on the VRL (student representative council). Achieved a grade 11 average of 70–78% and a grade 12 average of around 68%.</p>
+        </div>
+      </div>
+      <div class="resume-download">
+        <a class="btn btn-outline" href="Marco_Welman_CV.pdf" download>Download full CV (PDF)</a>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="sec-head"><span class="sec-num mono">03</span><h2>Projects</h2><span class="sec-rule"></span></div>
+      <div class="card-grid">
+        <div class="card">
+          <span class="c-num mono">Card 01</span>
+          <h3>Smart Banking System</h3>
+          <p>A custom-built banking system developed from the ground up as a university project, covering core banking operations and logic.</p>
+          <div class="tags"><span class="tag">C#</span><span class="tag">SQL</span></div>
+          <div class="c-links"><a href="#">GitHub →</a></div>
+        </div>
+        <div class="card">
+          <span class="c-num mono">Card 02</span>
+          <h3>Enterprise Network Design</h3>
+          <p>Designed and simulated a full network topology in Cisco Packet Tracer, including a budget plan for the proposed infrastructure.</p>
+          <div class="tags"><span class="tag">Packet Tracer</span><span class="tag">Networking</span></div>
+          <div class="c-links"><a href="#">Details →</a></div>
+        </div>
+        <div class="card">
+          <span class="c-num mono">Card 03</span>
+          <h3>Sales BI Dashboard</h3>
+          <p>Built a scalable NoSQL database paired with a business intelligence dashboard for sales reporting, integrating real-world datasets to support advanced business analytics.</p>
+          <div class="tags"><span class="tag">NoSQL</span><span class="tag">BI / Analytics</span></div>
+          <div class="c-links"><a href="#">GitHub →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="sec-head"><span class="sec-num mono">04</span><h2>Skills</h2><span class="sec-rule"></span></div>
+      <div class="skills-wrap">
+        <div class="skill-cat">
+          <div class="fn-title">Technical</div>
+          <ul>
+            <li>C++</li>
+            <li>C#</li>
+            <li>SQL</li>
+            <li>HTML</li>
+            <li>Python</li>
+            <li>JavaScript</li>
+          </ul>
+        </div>
+        <div class="skill-cat">
+          <div class="fn-title">Tools</div>
+          <ul>
+            <li>Visual Studio</li>
+            <li>GitHub</li>
+            <li>SQL Server</li>
+            <li>Microsoft Office</li>
+          </ul>
+        </div>
+        <div class="skill-cat">
+          <div class="fn-title">Soft Skills</div>
+          <ul>
+            <li>Problem solving</li>
+            <li>Teamwork</li>
+            <li>Communication</li>
+            <li>Time management</li>
+            <li>Analytical thinking</li>
+          </ul>
+        </div>
+        <div class="skill-cat">
+          <div class="fn-title">Languages</div>
+          <ul>
+            <li>Afrikaans <span class="lvl">Fluent</span></li>
+            <li>English <span class="lvl">Fluent</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="contact-inner">
+        <div class="sec-head"><span class="sec-num mono">05</span><h2 style="display:inline;">Contact</h2></div>
+        <p>Have a project, a role, or just a question? I'm quickest to reach by email — the rest are good for browsing what I've built and shared.</p>
+        <div class="contact-links">
+          <a href="mailto:welmanmarco44@gmail.com"><span class="mono">Email</span> welmanmarco44@gmail.com</a>
+          <a href="tel:+27815889944"><span class="mono">Phone</span> 081 588 9944</a>
+          <a href="#"><span class="mono">GitHub</span> github.com/yourhandle</a>
+          <a href="#"><span class="mono">LinkedIn</span> linkedin.com/in/yourhandle</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© 2026 Marco Welman</span>
+      <span>Built &amp; catalogued by hand</span>
+    </footer>
+  </main>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('main section[id]');
+
+  tabs.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.getElementById(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        tabs.forEach(t=>t.classList.toggle('active', t.dataset.target===entry.target.id));
+      }
+    });
+  },{rootMargin:'-40% 0px -55% 0px'});
+
+  sections.forEach(s=>obs.observe(s));
+</script>
+
+</body>
+</html>
